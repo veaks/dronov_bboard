@@ -31,13 +31,28 @@
                         <a href="#" class="dropdown-item">Удалить</a>
                     </div>
                 </li>
-
-
+                <li class="nav-item"><a href="#" class="nav-link">Вход</a></li>
             </ul>
         </div>
-
-
-
-
+        <div class="row">
+            <nav class="col-md-auto nav flex-column border">
+                <a href="{% url 'main:index' %}" class="nav-link root">Главная</a>
+                <span class="nav-link root font-weight-bold">Недвижимость</span>
+                <a href="#" class="nav-link">Жилье</a>
+                <a href="#" class="nav-link">Склады</a>
+                <a href="#" class="nav-link">Гаражи</a>
+                <span class="nav-link root font-weight-bold">Транспорт</span>
+                <a href="#" class="nav-link">Легковой</a>
+                <a href="#" class="nav-link">Грузовой</a>
+            </nav>
+            <section class="col border py-2">
+                {% bootstrap_messages %}
+                {% block content %}
+                {% endblock %}
+            </section>
+        </div>
+    <footer class="mt-3">
+        <p class="text-right font-italic">&copy; читатели</p>
+    </footer>
 </body>
 </html>
