@@ -18,20 +18,23 @@
         <div class="row">
             <ul class="col nav justify-content-end border">
                 <li class="nav-item"><a href="#" class="nav-link">Регистрация</a></li>
+                {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown toggle" data-toggle="dropdown" role="button"
                        aria-haspopup="true" aria-expanded="false">Профиль</a>
                     <div class="dropdown-menu">
-                        <a href="#" class="dropdown-item">Мои объявления</a>
-                        <a href="#" class="dropdown-item">Изменить личные данные</a>
+                        <a href="{% url 'main:profile' %}" class="dropdown-item">Мои объявления</a>
+                        <a href="{% url 'main:profile_change' %}" class="dropdown-item">Изменить личные данные</a>
                         <a href="#" class="dropdown-item">Изменить пароль</a>
                         <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">Выйти</a>
+                        <a href="{% url 'main:logout' %}" class="dropdown-item">Выйти</a>
                         <div class="dropdown-divider"></div>
                         <a href="#" class="dropdown-item">Удалить</a>
                     </div>
                 </li>
-                <li class="nav-item"><a href="#" class="nav-link">Вход</a></li>
+                {% else %}
+                <li class="nav-item"><a href="{% url 'main:login' %}" class="nav-link">Вход</a></li>
+                {% endif %}
             </ul>
         </div>
         <div class="row">
@@ -44,6 +47,7 @@
                 <span class="nav-link root font-weight-bold">Транспорт</span>
                 <a href="#" class="nav-link">Легковой</a>
                 <a href="#" class="nav-link">Грузовой</a>
+                <a href="{% url 'main:other' page='about' %}" class="nav-link root">О сайте</a>
             </nav>
             <section class="col border py-2">
                 {% bootstrap_messages %}
