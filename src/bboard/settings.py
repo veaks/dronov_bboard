@@ -29,6 +29,8 @@ ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = 'main.AdvUser'
 
+EMAIL_PORT = 1025
+
 # Application definition
 
 INSTALLED_APPS = [
