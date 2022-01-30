@@ -1,7 +1,8 @@
 from django.contrib import admin
-from django.utils.datetime_safe import datetime
+import datetime
 
-from main.models import AdvUser
+from main.forms import SubRubricForm
+from main.models import AdvUser, SubRubric, SuperRubric
 from main.utilities import send_activation_notification
 
 
@@ -17,10 +18,10 @@ send_activation_notifications.short_description = 'Отправка писем �
 
 
 class NonactivatedFilter(admin.SimpleListFilter):
-    title = 'Прошли активацию?'
+    title = ('Прошли активацию?')
     parameter_name = 'actstate'
 
-    def lookup(self, request, model_admin):
+    def lookups(self, request, model_admin):
         return (
             ('activated', 'Прошли'),
             ('threedays', 'Не прошли более 3 дней'),
@@ -39,15 +40,31 @@ class NonactivatedFilter(admin.SimpleListFilter):
             return queryset.filter(is_active=False, is_activated=False, date_joined__date__lt=d)
 
 
-# class AdvUserAdmin(admin.ModelAdmin):
-#     list_display = ('__str__', 'is_activated', 'date_joined')
-#     search_fields = ('username', 'email', 'first_name', 'last_name')
-#     list_filter = (NonactivatedFilter,)
-#     fields = (('username', 'email'), ('first_name', 'last_name'), ('send_messages', 'is_active', 'is_activated'),
-#               ('is_staff', 'is_superuser'), 'groups', 'user_permissions', ('last_login', 'date_joined'))
-#     readonly_fields = ('last_login', 'date_joined')
-#     actions = (send_activation_notifications,)
+class AdvUserAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'is_activated', 'date_joined')
+    search_fields = ('username', 'email', 'first_name', 'last_name')
+    list_filter = (NonactivatedFilter,)
+    fields = (('username', 'email'), ('first_name', 'last_name'), ('send_messages', 'is_active', 'is_activated'),
+               ('is_staff', 'is_superuser'), 'groups', 'user_permissions', ('last_login', 'date_joined'))
+    readonly_fields = ('last_login', 'date_joined')
+    actions = (send_activation_notifications,)
 
 
-#admin.site.register(AdvUser, AdvUserAdmin)
-admin.site.register(AdvUser)
+admin.site.register(AdvUser, AdvUserAdmin)
+
+
+class SubRubricInline(admin.TabularInline):
+    model = SubRubric
+
+
+class SuperRubricAdmin(admin.ModelAdmin):
+    exclude = ('super_rubric',)
+    inlines = (SubRubricInline,)
+
+
+class SubRubricAdmin(admin.ModelAdmin):
+    form = SubRubricForm
+
+
+admin.site.register(SuperRubric, SuperRubricAdmin)
+admin.site.register(SubRubric, SubRubricAdmin)
